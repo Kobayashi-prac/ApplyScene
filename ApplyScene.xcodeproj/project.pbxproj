@@ -33,7 +33,7 @@
 		69DDCCAB2F748F5D0076ADFC /* Exceptions for "ApplyScene" folder in "ApplyScene" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 69DDCC822F748F5B0076ADFC /* ApplyScene */;
 		};
