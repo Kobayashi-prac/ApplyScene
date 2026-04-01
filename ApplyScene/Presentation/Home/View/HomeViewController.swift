@@ -26,7 +26,9 @@ class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
-        tableView.register(, forCellReuseIdentifier: "uikit")
+        tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
+        tableView.register(SwiftUICell.self, forCellReuseIdentifier: "SwiftUI")
+        tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
     }
     
     private func addConstraintForTableView() {
@@ -46,18 +48,24 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell = UITableViewCell()
+        
         switch viewModel.cellTypes[indexPath.row] {
         case .uikit:
-            let cell = UITableViewCell()
+            cell = UITableViewCell()
         case .swiftui:
-            let cell = UITableViewCell()
+            cell = tableView.dequeueReusableCell(withIdentifier: "SwiftUI", for: indexPath)
         case .firebase:
-            let cell = UITableViewCell()
+            cell = UITableViewCell()
         }
-        return UITableViewCell()
+        return cell
     }
 }
 
 extension HomeViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellHeight = tableView.bounds.height / viewModel.cellTypes.count
+        return cellHeight
+    }
 }
