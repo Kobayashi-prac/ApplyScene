@@ -7,15 +7,10 @@
 
 import UIKit
 
-enum CellType: CaseIterable {
-    case uikit
-    case swiftui
-    case firebase
-}
-
 class HomeViewController: UIViewController {
     
     lazy var tableView = UITableView(frame: .zero)
+    let viewModel = HomeViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,19 +42,17 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CellType.allCases.count
+        return viewModel.cellTypes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        for type in CellType.allCases {
-            switch type {
-            case .uikit:
-                let cell = UITableViewCell()
-            case .swiftui:
-                let cell = UITableViewCell()
-            case .firebase:
-                let cell = UITableViewCell()
-            }
+        switch viewModel.cellTypes[indexPath.row] {
+        case .uikit:
+            let cell = UITableViewCell()
+        case .swiftui:
+            let cell = UITableViewCell()
+        case .firebase:
+            let cell = UITableViewCell()
         }
         return UITableViewCell()
     }
