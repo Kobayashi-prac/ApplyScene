@@ -65,7 +65,7 @@ extension HomeViewController: UITableViewDataSource {
 
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = tableView.bounds.height / viewModel.cellTypes.count
+        let cellHeight = tableView.bounds.height / viewModel.cellTypes.count.CGFloatValue
         return cellHeight
     }
 }
