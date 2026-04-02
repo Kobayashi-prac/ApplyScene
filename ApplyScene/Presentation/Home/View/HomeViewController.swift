@@ -27,7 +27,7 @@ class HomeViewController: UIViewController {
     
     private func registerCell() {
         tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
-        tableView.register(SwiftUICell.self, forCellReuseIdentifier: "SwiftUI")
+        tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
         tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
     }
     
@@ -55,7 +55,7 @@ extension HomeViewController: UITableViewDataSource {
         case .uikit:
             cell = UITableViewCell()
         case .swiftui:
-            cell = tableView.dequeueReusableCell(withIdentifier: "SwiftUI", for: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: SwiftUICell.identifier, for: indexPath)
         case .firebase:
             cell = UITableViewCell()
         }
