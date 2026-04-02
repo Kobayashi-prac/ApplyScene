@@ -48,18 +48,19 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        var cell = UITableViewCell()
-        
+                
         switch viewModel.cellTypes[indexPath.row] {
         case .uikit:
-            cell = UITableViewCell()
+            return UITableViewCell()
         case .swiftui:
-            cell = tableView.dequeueReusableCell(withIdentifier: SwiftUICell.identifier, for: indexPath)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SwiftUICell.identifier, for: indexPath) as? SwiftUICell else {
+                return UITableViewCell()
+            }
+            cell.configure(text: SwiftUICell.identifier)
+            return cell
         case .firebase:
-            cell = UITableViewCell()
+            return UITableViewCell()
         }
-        return cell
     }
 }
 
