@@ -56,7 +56,8 @@ extension HomeViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SwiftUICell.identifier, for: indexPath) as? SwiftUICell else {
                 return UITableViewCell()
             }
-            cell.configure(text: SwiftUICell.identifier)
+            cell.configure()
+            cell.setLabelText(text: SwiftUICell.identifier)
             return cell
         case .firebase:
             return UITableViewCell()

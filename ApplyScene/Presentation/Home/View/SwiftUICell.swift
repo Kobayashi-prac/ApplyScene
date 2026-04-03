@@ -27,9 +27,13 @@ class SwiftUICell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(text: String) {
+    func configure() {
         self.contentView.addSubview(titleLabel)
         setupConstraints()
+        addTapGesture()
+    }
+    
+    func setLabelText(text: String) {
         titleLabel.text = text
     }
     
@@ -38,5 +42,13 @@ class SwiftUICell: UITableViewCell {
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+    
+    private func addTapGesture() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        self.contentView.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func didTap() {
     }
 }
