@@ -63,6 +63,18 @@ extension HomeViewController: UITableViewDataSource {
             return UITableViewCell()
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch viewModel.cellTypes[indexPath.row] {
+        case .swiftui:
+            print("タップされた")
+        default:
+            break
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDelegate {
