@@ -19,9 +19,8 @@ class SwiftUICell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        // styleが何かと毎回呼ばれるか確認
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupComponents()
+        print("セルの\(#function)が呼ばれた")
     }
     
     required init?(coder: NSCoder) {
@@ -29,11 +28,15 @@ class SwiftUICell: UITableViewCell {
     }
     
     func configure(text: String) {
+        self.contentView.addSubview(titleLabel)
+        setupConstraints()
         titleLabel.text = text
     }
     
-    private func setupComponents() {
-        self.contentView.backgroundColor = .lightGray
-        self.contentView.addSubview(titleLabel)
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
     }
 }
