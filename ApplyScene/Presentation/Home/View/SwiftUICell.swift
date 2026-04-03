@@ -28,13 +28,17 @@ class SwiftUICell: UITableViewCell {
     }
     
     func configure() {
-        self.contentView.addSubview(titleLabel)
-        setupConstraints()
-        addTapGesture()
+        setupTitleLabel()
     }
     
     func setLabelText(text: String) {
         titleLabel.text = text
+    }
+    
+    private func setupTitleLabel() {
+        self.contentView.addSubview(titleLabel)
+        setupConstraints()
+        addTapGesture()
     }
     
     private func setupConstraints() {
@@ -50,5 +54,6 @@ class SwiftUICell: UITableViewCell {
     }
     
     @objc private func didTap() {
+        print("タップされた")
     }
 }
