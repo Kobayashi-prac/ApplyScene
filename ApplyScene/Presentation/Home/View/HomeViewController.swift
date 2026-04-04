@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class HomeViewController: UIViewController {
     
@@ -70,7 +71,8 @@ extension HomeViewController: UITableViewDataSource {
         
         switch viewModel.cellTypes[indexPath.row] {
         case .swiftui:
-            print("タップされた")
+            let controller = UIHostingController(rootView: rootView())
+            self.present(controller, animated: true)
         default:
             break
         }
