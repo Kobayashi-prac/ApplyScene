@@ -72,7 +72,7 @@ extension HomeViewController: UITableViewDataSource {
         switch viewModel.cellTypes[indexPath.row] {
         case .swiftui:
             let controller = UIHostingController(rootView: rootView())
-            self.present(controller, animated: true)
+            self.navigationController?.pushViewController(controller, animated: true)
         default:
             break
         }
