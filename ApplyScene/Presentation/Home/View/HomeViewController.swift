@@ -10,14 +10,24 @@ import SwiftUI
 
 class HomeViewController: UIViewController {
     
-    lazy var tableView = UITableView(frame: .zero)
     let viewModel = HomeViewModel()
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
+//        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
         setupTableViewDelegate()
         registerCell()
-        view.addSubview(tableView)
         addConstraintForTableView()
     }
     
@@ -33,7 +43,6 @@ class HomeViewController: UIViewController {
     }
     
     private func addConstraintForTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -81,7 +90,11 @@ extension HomeViewController: UITableViewDataSource {
 
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = tableView.bounds.height / viewModel.cellTypes.count.cgFloatValue
+        
+        let safeAreaTop = tableView.safeAreaInsets.top
+        let safeAreaBottom = tableView.safeAreaInsets.bottom
+        let safeAreaHeight = tableView.frame.height - safeAreaTop - safeAreaBottom
+        let cellHeight = safeAreaHeight / viewModel.cellTypes.count.cgFloatValue
         return cellHeight
     }
 }
