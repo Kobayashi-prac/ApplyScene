@@ -21,7 +21,11 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-//        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     private func setupTableView() {
@@ -80,8 +84,11 @@ extension HomeViewController: UITableViewDataSource {
         
         switch viewModel.cellTypes[indexPath.row] {
         case .swiftui:
-            let controller = UIHostingController(rootView: rootView())
+            let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
+                self?.navigationController?.navigationBar.isHidden = isHidden
+            }))
             self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
         default:
             break
         }

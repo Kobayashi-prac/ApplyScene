@@ -8,8 +8,25 @@
 import SwiftUI
 
 struct rootView: View {
+    
+    var completion: ((Bool) -> Void)?
+    @State var isPresented: Bool = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            Button {
+                completion?(true)
+                isPresented = true
+            } label: {
+                Text("子ビューへ")
+            }
+            .navigationDestination(isPresented: $isPresented) {
+                ChildView()
+            }
+            .onAppear {
+                completion?(false)
+            }
+        }
     }
 }
 
