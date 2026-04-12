@@ -10,6 +10,15 @@ import SwiftUI
 struct ChildView: View {
     var body: some View {
         VStack {
+            SubView {
+                Text("Text 1")
+                Text("Text 2")
+                HStack {
+                    Image(systemName: "star.fill")
+                    Image(systemName: "star.fill")
+                    Image(systemName: "star")
+                }
+            }
             Image(systemName: "car.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
