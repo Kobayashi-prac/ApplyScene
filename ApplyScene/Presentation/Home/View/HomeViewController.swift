@@ -44,7 +44,7 @@ class HomeViewController: UIViewController {
         tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
         tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
         tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
-        tableView.register(FireBaseCell.self, forCellReuseIdentifier: WebViewCell.identifier)
+        tableView.register(WebViewCell.self, forCellReuseIdentifier: WebViewCell.identifier)
     }
     
     private func addConstraintForTableView() {

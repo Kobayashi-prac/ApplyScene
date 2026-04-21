@@ -10,7 +10,7 @@ import WebKit
 
 class WebViewController: UIViewController {
     
-    var webView: WKWebView = {
+    private var webView: WKWebView = {
         // WKWebViewConfiguration の生成
         let webConfiguration = WKWebViewConfiguration()
         // WKWebView に Configuration を引き渡し initialize
