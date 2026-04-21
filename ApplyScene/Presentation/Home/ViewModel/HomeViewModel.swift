@@ -11,6 +11,7 @@ class HomeViewModel {
         case uikit
         case swiftui
         case firebase
+        case webView
     }
     
     var cellTypes: [CellType] = CellType.allCases

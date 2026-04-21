@@ -44,6 +44,7 @@ class HomeViewController: UIViewController {
         tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
         tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
         tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
+        tableView.register(FireBaseCell.self, forCellReuseIdentifier: WebViewCell.identifier)
     }
     
     private func addConstraintForTableView() {
@@ -75,6 +76,13 @@ extension HomeViewController: UITableViewDataSource {
             return cell
         case .firebase:
             return UITableViewCell()
+        case .webView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: WebViewCell.identifier, for: indexPath) as? WebViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            cell.setLabelText(text: WebViewCell.identifier)
+            return cell
         }
     }
     
@@ -87,6 +95,10 @@ extension HomeViewController: UITableViewDataSource {
             let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
                 self?.navigationController?.navigationBar.isHidden = isHidden
             }))
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
+        case .webView:
+            let controller = WebViewController()
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
         default:
