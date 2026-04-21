@@ -99,6 +99,9 @@ extension HomeViewController: UITableViewDataSource {
             self.navigationController?.navigationBar.isHidden = false
         case .webView:
             let controller = WebViewController()
+//            self.view.addSubview(controller.view)
+//            controller.modalPresentationStyle = .fullScreen
+//            self.present(controller, animated: true)
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
         default:

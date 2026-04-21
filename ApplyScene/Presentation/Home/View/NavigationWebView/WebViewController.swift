@@ -45,4 +45,12 @@ extension WebViewController: WKUIDelegate {
 
 // MARK: - WKWebView WKNavigation delegate
 extension WebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        if navigationAction.request.url?.absoluteString == "https://www.google.com/?hl=ja" {
+            return .allow
+        } else {
+            return .cancel
+        }
+    }
 }
