@@ -21,7 +21,11 @@ struct rootView: View {
                 Text("子ビューへ")
             }
             .navigationDestination(isPresented: $isPresented) {
-                ChildView()
+                if #available(iOS 17.0, *) {
+                    EnvironmentView()
+                } else {
+                    // Fallback on earlier versions
+                }
             }
             .onAppear {
                 completion?(false)
