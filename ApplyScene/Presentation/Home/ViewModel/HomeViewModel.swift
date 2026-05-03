@@ -8,6 +8,7 @@
 class HomeViewModel {
     
     enum CellType: CaseIterable {
+        case dependency
         case uikit
         case swiftui
         case firebase

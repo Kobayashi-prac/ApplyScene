@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
+        tableView.register(DependencyCell.self, forCellReuseIdentifier: DependencyCell.identifier)
         tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
         tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
         tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
@@ -65,6 +66,13 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
         switch viewModel.cellTypes[indexPath.row] {
+        case .dependency:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DependencyCell.identifier, for: indexPath) as? DependencyCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            cell.setLabelText(text: DependencyCell.identifier)
+            return cell
         case .uikit:
             return UITableViewCell()
         case .swiftui:
@@ -91,6 +99,10 @@ extension HomeViewController: UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch viewModel.cellTypes[indexPath.row] {
+        case .dependency:
+            let controller = UIHostingController(rootView: DependencyView())
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
         case .swiftui:
             let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
                 self?.navigationController?.navigationBar.isHidden = isHidden

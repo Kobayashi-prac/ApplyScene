@@ -10,6 +10,8 @@ import WebKit
 
 class WebViewController: UIViewController {
     
+    private let url = "https://www.google.com/?hl=ja"
+    
     private var webView: WKWebView = {
         // WKWebViewConfiguration の生成
         let webConfiguration = WKWebViewConfiguration()
@@ -29,8 +31,12 @@ class WebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupWebView()
+    }
+    
+    private func setupWebView() {
         // URLオブジェクトを生成
-        let myURL = URL(string: "https://www.google.com/?hl=ja")
+        let myURL = URL(string: url)
         // URLRequestオブジェクトを生成
         let myRequest = URLRequest(url: myURL!)
         // URLを WebView にロード
