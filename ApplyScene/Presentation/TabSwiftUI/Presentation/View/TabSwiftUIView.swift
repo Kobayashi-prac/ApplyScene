@@ -13,10 +13,19 @@ struct TabSwiftUIView: View {
             .onAppear {
                 print("A")
                 Task {
-                    // 関数がasyncだからawaitをつける
+                    /// アクターを継承して、メインスレッドで実施
                     /// await：実際にサスペンドするところ
-//                    await hoge()
+                    await hoge()
+                    /// Actorのメソッドを呼び出しているためawait
                     await Worker().start()
+                }
+                Task.detached {
+                    /// アクターを継承せず、別スレッドで実施
+                    print("detached")
+                }
+                Task { @concurrent in
+                    /// アクターを継承せず、別スレッドで実施
+                    print("@concurrent")
                 }
                 print("C")
             }
