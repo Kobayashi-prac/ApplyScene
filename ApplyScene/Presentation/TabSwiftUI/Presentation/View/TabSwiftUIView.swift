@@ -17,6 +17,7 @@ struct TabSwiftUIView: View {
                     /// await：実際にサスペンドするところ
                     await hoge()
                     /// Actorのメソッドを呼び出しているためawait
+                    /// Actorのメソッドを呼び出しているため別Actorで実行
                     await Worker().start()
                 }
                 Task.detached {
@@ -33,8 +34,9 @@ struct TabSwiftUIView: View {
     
     /// async：サスペンドする処理
     func hoge() async {
+        print("D")
         do {
-            try await Task.sleep(nanoseconds: 5)
+            try await Task.sleep(for: .seconds(3))
         } catch {
             print(error)
         }
@@ -48,7 +50,6 @@ actor Worker {
     var work: Task<Void, Never>?
     var result: Work?
 
-
     deinit {
         // even though the task is still retained,
         // once it completes it no longer causes a reference cycle with the actor
@@ -59,6 +60,7 @@ actor Worker {
 
 
     func start() {
+        print("あああ")
         work = Task {
             print("start task work")
             try? await Task.sleep(for: .seconds(3))
@@ -67,7 +69,6 @@ actor Worker {
             // but as the task completes, this reference is released
         }
         // we keep a strong reference to the task
-        print("一番最初")
     }
 }
 
