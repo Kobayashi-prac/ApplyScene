@@ -27,7 +27,7 @@ class MainTabBarController: UITabBarController {
         let swiftUI = UIHostingController(rootView: TabSwiftUIView())
         swiftUI.tabBarItem = UITabBarItem(title: "SwiftUI", image: UIImage(systemName: "swift"), selectedImage: nil)
 
-        let webView = UIHostingController(rootView: TabWebView())
+        let webView = WebStoryboardViewController.instantiate()
         webView.tabBarItem = UITabBarItem(title: "WebView", image: UIImage(systemName: "globe"), selectedImage: nil)
 
         let pip = UIHostingController(rootView: TabPIPView())
