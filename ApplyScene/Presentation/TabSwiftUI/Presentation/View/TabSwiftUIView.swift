@@ -60,7 +60,6 @@ actor Worker {
 
 
     func start() {
-        print("あああ")
         work = Task {
             print("start task work")
             try? await Task.sleep(for: .seconds(3))
