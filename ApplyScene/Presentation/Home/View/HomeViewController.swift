@@ -100,7 +100,7 @@ extension HomeViewController: UITableViewDataSource {
         
         switch viewModel.cellTypes[indexPath.row] {
         case .dependency:
-            let controller = UIHostingController(rootView: DependencyView())
+            let controller = UIHostingController(rootView: DependencyView(coordinator: Coordinator()))
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
         case .swiftui:

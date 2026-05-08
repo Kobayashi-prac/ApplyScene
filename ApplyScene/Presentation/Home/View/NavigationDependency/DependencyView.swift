@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct DependencyView: View {
+    
+    let coordinator: Coordinator
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        coordinator.destination()
     }
 }
 
 #Preview {
-    DependencyView()
+    DependencyView(coordinator: Coordinator())
 }
