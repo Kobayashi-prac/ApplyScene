@@ -13,10 +13,20 @@ struct TabSwiftUIView: View {
             .onAppear {
                 print("A")
                 Task {
-                    // 関数がasyncだからawaitをつける
+                    /// アクターを継承して、メインスレッドで実施
                     /// await：実際にサスペンドするところ
-//                    await hoge()
+                    await hoge()
+                    /// Actorのメソッドを呼び出しているためawait
+                    /// Actorのメソッドを呼び出しているため別Actorで実行
                     await Worker().start()
+                }
+                Task.detached {
+                    /// アクターを継承せず、別スレッドで実施
+                    print("detached")
+                }
+                Task { @concurrent in
+                    /// アクターを継承せず、別スレッドで実施
+                    print("@concurrent")
                 }
                 print("C")
             }
@@ -24,8 +34,9 @@ struct TabSwiftUIView: View {
     
     /// async：サスペンドする処理
     func hoge() async {
+        print("D")
         do {
-            try await Task.sleep(nanoseconds: 5)
+            try await Task.sleep(for: .seconds(3))
         } catch {
             print(error)
         }
@@ -38,7 +49,6 @@ struct Work: Sendable {}
 actor Worker {
     var work: Task<Void, Never>?
     var result: Work?
-
 
     deinit {
         // even though the task is still retained,
@@ -58,7 +68,6 @@ actor Worker {
             // but as the task completes, this reference is released
         }
         // we keep a strong reference to the task
-        print("一番最初")
     }
 }
 
