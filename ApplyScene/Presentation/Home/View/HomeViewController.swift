@@ -6,17 +6,32 @@
 //
 
 import UIKit
+import SwiftUI
 
 class HomeViewController: UIViewController {
     
-    lazy var tableView = UITableView(frame: .zero)
     let viewModel = HomeViewModel()
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
         setupTableViewDelegate()
         registerCell()
-        view.addSubview(tableView)
         addConstraintForTableView()
     }
     
@@ -26,13 +41,14 @@ class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
+        tableView.register(DependencyCell.self, forCellReuseIdentifier: DependencyCell.identifier)
         tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
         tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
         tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
+        tableView.register(WebViewCell.self, forCellReuseIdentifier: WebViewCell.identifier)
     }
     
     private func addConstraintForTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -50,6 +66,13 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
         switch viewModel.cellTypes[indexPath.row] {
+        case .dependency:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DependencyCell.identifier, for: indexPath) as? DependencyCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            cell.setLabelText(text: DependencyCell.identifier)
+            return cell
         case .uikit:
             return UITableViewCell()
         case .swiftui:
@@ -61,6 +84,13 @@ extension HomeViewController: UITableViewDataSource {
             return cell
         case .firebase:
             return UITableViewCell()
+        case .webView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: WebViewCell.identifier, for: indexPath) as? WebViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            cell.setLabelText(text: WebViewCell.identifier)
+            return cell
         }
     }
     
@@ -69,8 +99,23 @@ extension HomeViewController: UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch viewModel.cellTypes[indexPath.row] {
+        case .dependency:
+            let controller = UIHostingController(rootView: DependencyView())
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
         case .swiftui:
-            print("タップされた")
+            let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
+                self?.navigationController?.navigationBar.isHidden = isHidden
+            }))
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
+        case .webView:
+            let controller = WebViewController()
+//            self.view.addSubview(controller.view)
+//            controller.modalPresentationStyle = .fullScreen
+//            self.present(controller, animated: true)
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
         default:
             break
         }
@@ -79,7 +124,11 @@ extension HomeViewController: UITableViewDataSource {
 
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = tableView.bounds.height / viewModel.cellTypes.count.cgFloatValue
+        
+        let safeAreaTop = tableView.safeAreaInsets.top
+        let safeAreaBottom = tableView.safeAreaInsets.bottom
+        let safeAreaHeight = tableView.frame.height - safeAreaTop - safeAreaBottom
+        let cellHeight = safeAreaHeight / viewModel.cellTypes.count.cgFloatValue
         return cellHeight
     }
 }
