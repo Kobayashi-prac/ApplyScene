@@ -20,7 +20,6 @@ class UIKitCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print("セルの\(#function)が呼ばれた")
     }
     
     required init?(coder: NSCoder) {
