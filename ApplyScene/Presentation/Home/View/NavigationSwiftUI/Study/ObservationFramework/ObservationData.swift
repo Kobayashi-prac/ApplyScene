@@ -1,5 +1,5 @@
 //
-//  ObservationViewModel.swift
+//  ObservationData.swift
 //  ApplyScene
 //
 //  Created by swiftUI on 2026/04/14.
@@ -8,7 +8,7 @@
 import Foundation
 
 @available(iOS 17.0, *)
-@Observable class ObservationViewModel {
+@Observable class ObservationData {
     
     var playerName = ""
     var score = 0
