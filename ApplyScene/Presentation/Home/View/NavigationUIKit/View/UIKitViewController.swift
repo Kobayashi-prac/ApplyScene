@@ -17,7 +17,16 @@ class UIKitViewController: UIViewController {
         print("\(view.safeAreaInsets)")
         
         setupView()
-        setupNavigationBar()
+        setupNavigationBar(text: "First")
+        
+        Task {
+            do {
+                try await Task.sleep(for: .seconds(5))
+                isNavigationBarHiddn(isHidden: true)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +53,12 @@ class UIKitViewController: UIViewController {
         // 画面表示直後の処理を書く
         print("\(#function)：画面表示直後")
         print("\(view.safeAreaInsets)")
+        
+        setupNavigationBar(text: "A")
+        DispatchQueue.main.async {
+            self.setupNavigationBar(text: "C")
+        }
+        setupNavigationBar(text: "B")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,10 +81,25 @@ class UIKitViewController: UIViewController {
     }
     
     private func setupViewConstraint() {
+        let grayView = UIView()
+        grayView.backgroundColor = .gray
+        grayView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(grayView)
         
+        NSLayoutConstraint.activate ([
+            grayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            grayView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            grayView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            grayView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
     
-    private func setupNavigationBar() {
-        title = "First"
+    private func setupNavigationBar(text: String) {
+        title = text
+    }
+    
+    private func isNavigationBarHiddn(isHidden: Bool) {
+        print("NavigationBar：\(isHidden ? "非表示" : "表示")")
+        navigationController?.navigationBar.isHidden = isHidden
     }
 }
