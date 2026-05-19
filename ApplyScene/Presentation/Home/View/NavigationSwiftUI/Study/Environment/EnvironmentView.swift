@@ -27,8 +27,10 @@ struct EnvContentView: View {
     
     var body: some View {
         @Bindable var data = data
-        SpeedView()
-        Slider(value: $data.speed, in: 0...100)
+        VStack {
+            SpeedView()
+            Slider(value: $data.speed, in: 0...360, step: 0.1)
+        }
     }
 }
 
@@ -36,9 +38,18 @@ struct EnvContentView: View {
 struct SpeedView: View {
     
     @Environment(EnvironmentData.self) var data: EnvironmentData
+    @State private var text: String = "Welcome to SwiftUI"
     
     var body: some View {
-        Text("\(data.speed)")
+        VStack {
+            Text("🫨")
+                .font(.largeTitle)
+                .fontWeight(.medium)
+                .rotationEffect(.degrees(data.speed))
+                .animation(.easeInOut(duration: 5), value: data.speed)
+            TextField("Enter text here", text: $text)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
     }
 }
 
