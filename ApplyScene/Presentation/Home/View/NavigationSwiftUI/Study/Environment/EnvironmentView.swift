@@ -10,11 +10,35 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct EnvironmentView: View {
     
-    @Environment(EnvironmentModel.self) var model: EnvironmentModel
+    let data = EnvironmentData()
     
     var body: some View {
-        @Bindable var model = model
-        Slider(value: $model.speed, in: 0...100)
+        Group {
+            EnvContentView()
+        }
+        .environment(data)
+    }
+}
+
+@available(iOS 17.0, *)
+struct EnvContentView: View {
+    
+    @Environment(EnvironmentData.self) var data: EnvironmentData
+    
+    var body: some View {
+        @Bindable var data = data
+        SpeedView()
+        Slider(value: $data.speed, in: 0...100)
+    }
+}
+
+@available(iOS 17.0, *)
+struct SpeedView: View {
+    
+    @Environment(EnvironmentData.self) var data: EnvironmentData
+    
+    var body: some View {
+        Text("\(data.speed)")
     }
 }
 
@@ -22,6 +46,5 @@ struct EnvironmentView: View {
     if #available(iOS 17.0, *) {
         EnvironmentView()
     } else {
-        // Fallback on earlier versions
     }
 }

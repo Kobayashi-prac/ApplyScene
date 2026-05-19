@@ -104,11 +104,15 @@ extension HomeViewController: UITableViewDataSource {
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
         case .swiftui:
-            let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
-                self?.navigationController?.navigationBar.isHidden = isHidden
-            }))
-            self.navigationController?.pushViewController(controller, animated: true)
-            self.navigationController?.navigationBar.isHidden = false
+            if #available(iOS 17.0, *) {
+                let controller = UIHostingController(rootView: rootView(completion: { [weak self] isHidden in
+                    self?.navigationController?.navigationBar.isHidden = isHidden
+                }))
+                self.navigationController?.pushViewController(controller, animated: true)
+                self.navigationController?.navigationBar.isHidden = false
+            } else {
+                // Fallback on earlier versions
+            }
         case .webView:
             let controller = WebViewController()
 //            self.view.addSubview(controller.view)
