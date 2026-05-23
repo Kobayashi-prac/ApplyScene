@@ -22,14 +22,10 @@ struct EnvironmentView: View {
 
 @available(iOS 17.0, *)
 struct EnvContentView: View {
-    
-    @Environment(EnvironmentData.self) var data: EnvironmentData
-    
+        
     var body: some View {
-        @Bindable var data = data
         VStack {
             SpeedView()
-            Slider(value: $data.speed, in: 0...360, step: 0.1)
         }
     }
 }
@@ -40,15 +36,41 @@ struct SpeedView: View {
     @Environment(EnvironmentData.self) var data: EnvironmentData
     @State private var text: String = "Welcome to SwiftUI"
     
+    @State var index = 0
+    
+    var colorNames: [String] = ["red", "blue", "green", "yellow"]
+    var colors: [Color] = [.red, .blue, .green, .yellow]
+    
     var body: some View {
+        @Bindable var data = data
         VStack {
-            Text("🫨")
+            Spacer()
+            
+            Text(text)
                 .font(.largeTitle)
                 .fontWeight(.medium)
                 .rotationEffect(.degrees(data.speed))
                 .animation(.easeInOut(duration: 5), value: data.speed)
+                .foregroundStyle(colors[index])
+            
+            Spacer()
+            Divider()
+            
+            Slider(value: $data.speed, in: 0...360, step: 0.1)
+                .padding()
+            
             TextField("Enter text here", text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            Picker(selection: $index, label: Text("Color")) {
+                ForEach(0 ..< colorNames.count, id: \.self) {
+                    Text(colorNames[$0])
+                        .foregroundStyle(colors[$0])
+                }
+            }
+            .pickerStyle(.wheel)
+            .padding()
         }
     }
 }
