@@ -24,8 +24,15 @@ struct DemoView: View {
         print("End \(Date())")
     }
     
+    // Actorを引き継がない。別スレッドで実行させたいならこっちを使う。
+    // nonisolated func takesTooLong() async {
+    
     func takesTooLong() async {
-        Thread.sleep(forTimeInterval: 5)
+        
+        // スレッド自体を止めるため、リソースが解放されない
+        // Thread.sleep(forTimeInterval: 5)
+        
+        try? await Task.sleep(for: .seconds(5))
         print("Async task completed at \(Date())")
     }
 }
