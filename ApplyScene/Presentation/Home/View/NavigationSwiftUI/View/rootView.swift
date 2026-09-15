@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct rootView: View {
     
     var completion: ((Bool) -> Void)?
     @State var isPresented: Bool = false
-    
+        
     var body: some View {
         NavigationStack {
             Button {
@@ -21,11 +22,7 @@ struct rootView: View {
                 Text("子ビューへ")
             }
             .navigationDestination(isPresented: $isPresented) {
-                if #available(iOS 17.0, *) {
-                    EnvironmentView()
-                } else {
-                    // Fallback on earlier versions
-                }
+                EnvironmentView()
             }
             .onAppear {
                 completion?(false)
@@ -35,5 +32,9 @@ struct rootView: View {
 }
 
 #Preview {
-    rootView()
+    if #available(iOS 17.0, *) {
+        rootView()
+    } else {
+        // Fallback on earlier versions
+    }
 }

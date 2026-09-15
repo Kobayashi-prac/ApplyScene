@@ -9,13 +9,19 @@ import SwiftUI
 
 struct CombineView: View {
     
-    @StateObject var viewModel = CombineViewStore(player: "John")
+    // ビューにオブジェクトを所有させない
+    // 再描画時に、破棄される可能性あり
+    // @ObservedObject var data = DemoData(player: "John")
+    
+    // ObservedObjectの改良版
+    // 再描画時に破棄されない
+    @StateObject var data = DemoData(player: "John")
     
     var body: some View {
         VStack {
-            Text("\(viewModel.playerName)'s Score = \(viewModel.score)")
+            Text("\(data.playerName)'s Score = \(data.score)")
             Button {
-                viewModel.updateData()
+                data.updateData()
             } label: {
                 Text("Update")
             }

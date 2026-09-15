@@ -1,5 +1,5 @@
 //
-//  CombineViewModel.swift
+//  DemoData.swift
 //  ApplyScene
 //
 //  Created by swiftUI on 2026/04/14.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class CombineViewStore: ObservableObject {
+class DemoData: ObservableObject {
     
     @Published var playerName = ""
     @Published var score = 0
