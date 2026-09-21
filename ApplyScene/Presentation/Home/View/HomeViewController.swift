@@ -74,7 +74,12 @@ extension HomeViewController: UITableViewDataSource {
             cell.setLabelText(text: DependencyCell.identifier)
             return cell
         case .uikit:
-            return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: UIKitCell.identifier, for: indexPath) as? UIKitCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            cell.setLabelText(text: UIKitCell.identifier)
+            return cell
         case .swiftui:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SwiftUICell.identifier, for: indexPath) as? SwiftUICell else {
                 return UITableViewCell()
@@ -101,6 +106,10 @@ extension HomeViewController: UITableViewDataSource {
         switch viewModel.cellTypes[indexPath.row] {
         case .dependency:
             let controller = UIHostingController(rootView: DependencyView(coordinator: Coordinator()))
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
+        case .uikit:
+            let controller = UIKitViewController()
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
         case .swiftui:

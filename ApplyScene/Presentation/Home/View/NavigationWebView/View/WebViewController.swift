@@ -32,6 +32,13 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
+        setupNavigationBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Thread.sleep(forTimeInterval: 5)
+        print("hoge")
     }
     
     private func setupWebView() {
@@ -41,6 +48,27 @@ class WebViewController: UIViewController {
         let myRequest = URLRequest(url: myURL!)
         // URLを WebView にロード
         webView.load(myRequest)
+    }
+    
+    private func setupNavigationBar() {
+        self.navigationItem.title = "タイトル"
+        
+        let appearance = UINavigationBarAppearance()
+        
+        // これらは背景系の値を一気に上書きするため背景色などの設定は後に行う
+        // 半透明
+//        appearance.configureWithDefaultBackground()
+        // 背景が透けない
+//        appearance.configureWithOpaqueBackground()
+        // 完全に透明
+        appearance.configureWithTransparentBackground()
+        
+        // バーに背景色を設定
+//        appearance.backgroundColor = .systemBackground
+        
+        let bar = navigationController?.navigationBar
+        bar?.standardAppearance = appearance
+        bar?.scrollEdgeAppearance = appearance
     }
 }
 
@@ -53,10 +81,6 @@ extension WebViewController: WKUIDelegate {
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
-        if navigationAction.request.url?.absoluteString == "https://www.google.com/?hl=ja" {
-            return .allow
-        } else {
-            return .cancel
-        }
+        return .allow
     }
 }
