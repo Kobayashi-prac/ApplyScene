@@ -14,60 +14,64 @@ nonisolated enum Section {
 
 class NavigationSettingViewController: UIViewController {
     
-    private var collectionView: UICollectionView?
-    private var registration: UICollectionView.CellRegistration<UICollectionViewListCell, String>?
-    private var dataSource: UICollectionViewDiffableDataSource<Section, String>?
-    private var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
+    private let collectionView: UICollectionView
+    private var dataSource: UICollectionViewDiffableDataSource<Section, String>
+    
+    init() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: Self.makeLayout())
+        dataSource = Self.makeDataSource(collectionView: collectionView)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // Storyboard や xib から画面を生成するときに UIKit が呼ぶイニシャライザ
+    // サブクラスで独自の指定イニシャライザ(init() など)を定義していない
+    // 追加したプロパティがすべて初期値を持っている(または Optional や lazy)
+    // 上記以外の場合、自動継承が打ち切られるため必須イニシャライザを自分で書く必要がある
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupCollectionView()
-        registerCell()
-        setupDataSource()
         setupSnapshot()
     }
     
-    private func setupCollectionView() {
+    private static func makeLayout() -> UICollectionViewCompositionalLayout {
         let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         let layout = UICollectionViewCompositionalLayout.list(using: config)
-        let collection = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collection.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(collection)
-        collectionView = collection
+        return layout
     }
     
-    /// セル登録
-    private func registerCell() {
-        registration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { cell, _, item in
-            var content = cell.defaultContentConfiguration()
-            content.text = item
-            cell.contentConfiguration = content
+    /// データソース生成
+    private static func makeDataSource(collectionView: UICollectionView) -> UICollectionViewDiffableDataSource<Section, String> {
+        // セル登録
+        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { cell, _, item in
+            var config = cell.defaultContentConfiguration()
+            config.text = item
+            cell.contentConfiguration = config
             cell.accessories = [.disclosureIndicator()]
         }
+        return UICollectionViewDiffableDataSource(collectionView: collectionView) { collection, indexPath, item in
+            collection.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+        }
     }
     
-    /// データソース登録
-    /// コレクションビューとデータソースを接続し、セルの内容をindexPathに登録する
-    private func setupDataSource() {
-        guard let collection = collectionView else {
-            return
-        }
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collection) { [weak self] collection, indexPath, item in
-            guard let registration = self?.registration else {
-                return UICollectionViewCell()
-            }
-            return collection.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
-        }
+    private func setupCollectionView() {
+        collectionView.frame = view.bounds
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(collectionView)
     }
     
     /// データ反映
     /// 実際のUI表示を作成する
     private func setupSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.main, .settings])
         snapshot.appendItems(["りんご", "みかん"], toSection: .main)
         snapshot.appendItems(["通知"], toSection: .settings)
-        dataSource?.apply(snapshot)
+        dataSource.apply(snapshot)
     }
     
 }
