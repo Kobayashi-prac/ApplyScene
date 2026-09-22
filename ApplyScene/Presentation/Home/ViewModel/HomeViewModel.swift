@@ -11,7 +11,7 @@ class HomeViewModel {
         case dependency
         case uikit
         case swiftui
-        case firebase
+        case navigation
         case webView
     }
     

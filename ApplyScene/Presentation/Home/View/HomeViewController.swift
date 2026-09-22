@@ -42,9 +42,9 @@ class HomeViewController: UIViewController {
     
     private func registerCell() {
         tableView.register(DependencyCell.self, forCellReuseIdentifier: DependencyCell.identifier)
-        tableView.register(UIKitCell.self, forCellReuseIdentifier: "UIKit")
+        tableView.register(UIKitCell.self, forCellReuseIdentifier: UIKitCell.identifier)
         tableView.register(SwiftUICell.self, forCellReuseIdentifier: SwiftUICell.identifier)
-        tableView.register(FireBaseCell.self, forCellReuseIdentifier: "FireBase")
+        tableView.register(NavigationComponentCell.self, forCellReuseIdentifier: NavigationComponentCell.identifier)
         tableView.register(WebViewCell.self, forCellReuseIdentifier: WebViewCell.identifier)
     }
     
@@ -87,8 +87,12 @@ extension HomeViewController: UITableViewDataSource {
             cell.configure()
             cell.setLabelText(text: SwiftUICell.identifier)
             return cell
-        case .firebase:
-            return UITableViewCell()
+        case .navigation:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: NavigationComponentCell.identifier, for: indexPath) as? NavigationComponentCell else {
+                return UITableViewCell()
+            }
+            cell.configure()
+            return cell
         case .webView:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: WebViewCell.identifier, for: indexPath) as? WebViewCell else {
                 return UITableViewCell()
@@ -118,6 +122,10 @@ extension HomeViewController: UITableViewDataSource {
             }))
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
+        case .navigation:
+            let controller = NavigationSettingViewController()
+            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.navigationBar.isHidden = false
         case .webView:
             let controller = WebViewController()
 //            self.view.addSubview(controller.view)
@@ -125,8 +133,6 @@ extension HomeViewController: UITableViewDataSource {
 //            self.present(controller, animated: true)
             self.navigationController?.pushViewController(controller, animated: true)
             self.navigationController?.navigationBar.isHidden = false
-        default:
-            break
         }
     }
 }
